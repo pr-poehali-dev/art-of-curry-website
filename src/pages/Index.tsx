@@ -134,6 +134,11 @@ const galleryImages = [
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/98d82402-b32b-456c-8961-5f211e3ea808.png', label: 'Микс Дал' },
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/a0a59239-3a9c-452b-8540-8aa9799510fc.png', label: 'Панир Пакора' },
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/ad1664c6-dacd-4efa-b4bc-9d00d3c8fdc7.png', label: 'Плейн Райс' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/31cb4ae0-3439-43f3-a92c-f54f0478661f.png', label: 'Вегетарианское Тхали 2' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/3f6ad396-0c6b-4501-8b4d-c12592896169.png', label: 'Вегетарианское Тхали 1' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/5be249ba-091f-4ed4-9f40-ae0aecd0ac7a.png', label: 'Не вегетарианское Тхали' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/709a0a9b-c8d2-4e94-81b5-95c7f020afb2.png', label: 'Чили Панир' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/33b5717f-669b-4250-8d03-ad5c1f419f8f.png', label: 'Овощная Пакора' },
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/files/e87de4e1-5c79-4dca-86cb-78944e0f7db4.jpg', label: 'Интерьер кафе' },
 ];
 
