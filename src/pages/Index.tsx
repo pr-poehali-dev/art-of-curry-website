@@ -297,18 +297,7 @@ export default function Index() {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="rounded-2xl overflow-hidden shadow-2xl" style={{ boxShadow: '0 20px 60px rgba(200,105,30,0.2)' }}>
-                <img
-                  src="https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/7edfba06-dc12-4b0d-8b7b-b2cd7aebabd3.png"
-                  alt="Меню Арт оф Карри"
-                  className="w-full object-cover"
-                  style={{ maxHeight: 480 }}
-                />
-              </div>
-            </div>
-            <div className="space-y-6">
+          <div className="max-w-2xl mx-auto space-y-6 text-center">
               <h3 className="text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--dark-brown)' }}>
                 Вкус настоящей Индии<br />в каждом блюде
               </h3>
@@ -335,7 +324,6 @@ export default function Index() {
                   </div>
                 ))}
               </div>
-            </div>
           </div>
         </div>
       </section>
