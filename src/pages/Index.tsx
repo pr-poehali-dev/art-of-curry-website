@@ -622,8 +622,8 @@ export default function Index() {
 
           <div className="grid sm:grid-cols-3 gap-6 mb-12">
             {[
-              { icon: 'Phone', title: 'Телефон', lines: ['Укажите номер телефона', 'Ежедневно 11:00–23:00'] },
-              { icon: 'MapPin', title: 'Адрес', lines: ['Укажите адрес кафе', 'Ваш город'] },
+              { icon: 'Phone', title: 'Телефон', lines: ['+7 (917) 521-26-17', 'Ежедневно 11:00–23:00'] },
+              { icon: 'MapPin', title: 'Адрес', lines: ['ТЦ Рязанский, Рязанский пр-т, 30 к2', 'Москва'] },
               { icon: 'Clock', title: 'Режим работы', lines: ['Пн–Вс: 11:00 – 23:00', 'Без выходных'] },
             ].map((item, i) => (
               <div
