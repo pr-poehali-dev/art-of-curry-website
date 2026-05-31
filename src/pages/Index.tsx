@@ -1,237 +1,19 @@
-import { useState, useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import Icon from '@/components/ui/icon';
-
-const menuData = {
-  vegetarian: {
-    label: 'Вегетарианские блюда',
-    emoji: '🌿',
-    note: 'Карри+рис (120г) или роти на выбор',
-    items: [
-      { name: 'Малай Кофта / Malai Kofta', desc: 'Жареные картофельные и сырные шарики в томатно-луковом соусе', weight: '300г', price: 580 },
-      { name: 'Чана Масала / Channa Masala', desc: 'Карри из нута в томатно-луковом соусе', weight: '300г', price: 410 },
-      { name: 'Палак Панир / Palak Paneer', desc: 'Блюдо из густого шпинатного пюре с кусочками домашнего сыра', weight: '300г', price: 520 },
-      { name: 'Алу Гоби / Aloo Gobi', desc: 'Картофель и цветная капуста со специями', weight: '280г', price: 430 },
-      { name: 'Панир Макхани / Paneer Makhani', desc: 'Кубики домашнего сыра в сливочном томатном соусе с кешью', weight: '280г', price: 490 },
-      { name: 'Баклажан Бхарта / Eggplant Bharta', desc: 'Баклажаны-гриль с помидорами, зеленью и специями', weight: '280г', price: 530 },
-      { name: 'Микс Веджетейблз / Mix Vegetables', desc: 'Смесь овощей с карри и специями', weight: '280г', price: 490 },
-      { name: 'Кадай Панир / Kadai Paneer', desc: 'Домашний сыр, болгарский перец и свежемолотые специи', weight: '280г', price: 540 },
-      { name: 'Шахи Панир / Shahi Paneer', desc: 'Кубики панира в густом соусе из помидоров, кешью, гхи и сливок', weight: '300г', price: 550 },
-      { name: 'Раджма Масала / Rajma Masala', desc: 'Карри из красной фасоли со специями', weight: '330г', price: 410 },
-      { name: 'Дал Макхани / Dal Makhani', desc: 'Чёрный маш на медленном огне с помидорами и сливками', weight: '330г', price: 470 },
-      { name: 'Дал Тадка / Dal Tadka', desc: 'Чечевица со специями и зеленью', weight: '300г', price: 350 },
-      { name: 'Микс Дал / Mix Dal', desc: 'Индийское блюдо из комбинации чечевицы', weight: '300г', price: 370 },
-      { name: 'Дал Палак / Dal Palak', desc: 'Шпинат, чечевица, специи и травы', weight: '300г', price: 440 },
-      { name: 'Овощной Бирьяни / Veg Biryani', desc: 'Ароматный плов из риса басмати с овощами', weight: '250/30/20г', price: 450 },
-    ]
-  },
-  nonvegetarian: {
-    label: 'Не вегетарианские блюда',
-    emoji: '🍗',
-    note: 'Карри+рис (120г) или роти на выбор',
-    items: [
-      { name: 'Батер Чикен / Butter Chicken', desc: 'Кусочки курицы в томатно-сливочном соусе со специями', weight: '280г', price: 530 },
-      { name: 'Минт Чикен Карри / Mint Chicken Curry', desc: 'Курица маринуется в специях, готовится в карри из мяты и кинзы', weight: '280г', price: 540 },
-      { name: 'Чикен Карри / Chicken Curry', desc: 'Куриное мясо в пряном соусе из кориандра, куркумы, чили и имбиря', weight: '280г', price: 450 },
-      { name: 'Корма Чикен / Korma Chicken', desc: 'Курица с кешью в кремовом соусе', weight: '280г', price: 510 },
-      { name: 'Чикен Тикка Масала / Chicken Tikka Masala', desc: 'Куриное бедро с луком, чесноком, имбирём и специями', weight: '280г', price: 490 },
-      { name: 'Маттон Карри / Mutton Curry', desc: 'Баранина в пряном соусе из кориандра, куркумы, чили и имбиря', weight: '280г', price: 680 },
-      { name: 'Проун Карри / Prawns Curry', desc: 'Карри с тигровыми креветками', weight: '300г', price: 680 },
-      { name: 'Проун Масала Карри / Prawns Masala Curry', desc: 'Карри с креветками и специями масала', weight: '300г', price: 690 },
-      { name: 'Кадай Чикен / Kadai Chicken', desc: 'Куриное бедро с чили, кориандром, паприкой и луком', weight: '300г', price: 510 },
-      { name: 'Маттон Корма / Mutton Korma', desc: 'Баранина в густом сливочно-ореховом соусе', weight: '280г', price: 680 },
-      { name: 'Суп с Бараниной / Soup with Mutton', desc: 'Болгарский перец, чеснок, имбирь, баранина, кинза, специи', weight: '300г', price: 580 },
-      { name: 'Курица с Жареным Рисом / Chicken Fried Rice', desc: 'Плов из риса басмати с кусочками курицы и специями', weight: '350г', price: 480 },
-      { name: 'Маттон Бирьяни / Mutton Biryani', desc: 'Плов из риса басмати с кусочками баранины и специями', weight: '350г', price: 720 },
-      { name: 'Чикен Тикка Бирьяни / Chicken Tikka Biryani', desc: 'Обжаренное филе цыплёнка под соусом масала с рисом басмати', weight: '250/30/20г', price: 480 },
-    ]
-  },
-  starters: {
-    label: 'Закуски и салаты',
-    emoji: '🥗',
-    note: '',
-    items: [
-      { name: 'Панир Ролл / Paneer Roll', desc: 'Болгарский перец, капуста, помидор, огурец, домашний сыр, соус', weight: '150г', price: 300 },
-      { name: 'Момо Вегетарианский / Momo Veg Steam', desc: 'Индийские пельмени с вегетарианской начинкой из овощей, с острым соусом', weight: '220г', price: 350 },
-      { name: 'Чикен Эгг Ролл с картошкой / Chicken Egg Roll', desc: 'Курица, яйцо, соус, болгарский перец, капуста, помидор, огурец', weight: '280/120г', price: 440 },
-      { name: 'Эгг Ролл / Egg Roll', desc: 'Яйцо, болгарский перец, капуста, помидор, огурец, соус', weight: '250г', price: 270 },
-      { name: 'Овощная Пакора / Veg Pakora', desc: 'Кусочки овощей во фритюре в остром кляре из нутовой муки', weight: '250г', price: 450 },
-      { name: 'Хара Бхара Кебаб / Hara Bhara Kabab', desc: 'Картофельная котлета со шпинатом, горошком и нутом', weight: '250г', price: 430 },
-      { name: 'Алу Самоса / Aloo Samosa', desc: 'Традиционная закуска с картофельной начинкой со специями', weight: '250г', price: 270 },
-      { name: 'Момо Вегетарианский / Veg Momo', desc: 'Индийские пельмени с вегетарианской начинкой, с прянным соусом', weight: '200г', price: 350 },
-      { name: 'Момо с Курицей / Momo Chicken', desc: 'Индийские пельмени с начинкой из курицы', weight: '250г', price: 380 },
-      { name: 'Панир Пакора / Paneer Pakora', desc: 'Кусочки домашнего сыра в кляре, обжаренные во фритюре', weight: '250г', price: 450 },
-      { name: 'Чикен Самоса / Chicken Samosa', desc: 'Закуска с куриной начинкой со специями', weight: '250г', price: 350 },
-      { name: 'Момо из Баранины / Mutton Momo', desc: 'Индийские пельмени с начинкой из баранины', weight: '250г', price: 490 },
-      { name: 'Нутовый Салат / Channa Salad', desc: 'Нут, помидор, лук, огурцы, кинза, перец чили', weight: '220г', price: 350 },
-      { name: 'Смесь Овощей / Mix Salad', desc: 'Огурец, томат, морковь, болгарский перец, оливковое масло, кинза', weight: '200г', price: 330 },
-      { name: 'Чили Панир / Chili Panir', desc: 'Индо-китайское блюдо из сыра в остром пикантном соусе с перцем', weight: '350г', price: 550 },
-    ]
-  },
-  bread: {
-    label: 'Хлеб и Рис',
-    emoji: '🫓',
-    note: '',
-    items: [
-      { name: 'Алу Паратха / Aloo Parantha', desc: 'Лепёшка с начинкой из картофеля со специями', weight: '150г', price: 170 },
-      { name: 'Гарлик Паратха / Garlic Parantha', desc: 'Лепёшка с добавлением чеснока', weight: '120г', price: 150 },
-      { name: 'Папад / Papad', desc: 'Тонкая круглая лепёшка с пряностями и травами', weight: '10г', price: 100 },
-      { name: 'Роти / Roti', desc: 'Традиционный индийский хлеб в виде круглых лепёшек', weight: '80г', price: 80 },
-      { name: 'Баттер Роти / Butter Roti', desc: 'Традиционный хлеб с добавлением топлёного масла', weight: '100г', price: 220 },
-      { name: 'Кимма Паратха / Kimma Parantha', desc: 'Лепёшка с начинкой из куриного мяса со специями', weight: '150г', price: 250 },
-      { name: 'Чиз Гарлик Паратха / Chees Garlic Parantha', desc: 'Лепёшка с начинкой из сыра с добавлением чеснока', weight: '150г', price: 210 },
-      { name: 'Панир Паратха / Paneer Parantha', desc: 'Домашний сыр, куркума, кинза, паприка, сливочное масло', weight: '170г', price: 220 },
-      { name: 'Чиз Паратха / Chees Parantha', desc: 'Лепёшка с начинкой из сыра', weight: '140г', price: 190 },
-      { name: 'Микс Паратха / Mix Parantha', desc: 'Мука, картошка, имбирь, лук, кинза, сыр, куркума, паприка', weight: '170г', price: 200 },
-      { name: 'Зира Рис / Zira Rice', desc: 'Рис басмати приготовленный с добавлением кумина', weight: '200г', price: 220 },
-      { name: 'Лимон Рис / Lemon Rice', desc: 'Рис басмати с добавлением лимонного сока и специй', weight: '200г', price: 250 },
-      { name: 'Плейн Райс / Plain Rice', desc: 'Варёный рассыпчатый рис басмати', weight: '200г', price: 180 },
-      { name: 'Рис Басмати со Шпинатом / Rice Basmati with Spinach', desc: 'Ароматный рис с добавлением шпината', weight: '200г', price: 350 },
-    ]
-  },
-  thali: {
-    label: 'Тхали',
-    emoji: '🍱',
-    note: 'Традиционное индийское блюдо — набор из нескольких блюд на одном подносе',
-    items: [
-      { name: 'Вегетарианское Тхали / Veg Thali', desc: 'Дал тадка, палак панир, ведж райта, салат, алу гоби, гулаб джамун, рис, алу паратха, баттер роти, панир макхани', weight: '1,4кг', price: 1350 },
-      { name: 'Тхали не вегетарианское 1 / Non Veg Thali 1', desc: 'Баттер чикен, чикен тикка масала, рис, салат, алу паратха, баттер паратха, гулаб джамун, дал тадка', weight: '1,25кг', price: 1250 },
-      { name: 'Тхали не вегетарианское 2 / Non Veg Thali 2', desc: 'Маттон карри, чикен тикка масала, баттер чикен, дал тадка, алу паратха, баттер роти, плейн райс, салат, ведж райт, гулаб джамун', weight: '1,4кг', price: 1480 },
-      { name: 'Не вегетарианское Тхали 3 / Non Veg Thali 3', desc: 'Минт чикен карри, чикен корма, чикен карри, дал тадка, рис, алу паратха, баттер роти, салат, ведж райт, гулаб джамун', weight: '1,4кг', price: 1480 },
-    ]
-  },
-  desserts: {
-    label: 'Десерты и напитки',
-    emoji: '🍮',
-    note: '',
-    items: [
-      { name: 'Гаджар ка Халва / Gajar ka Halwa', desc: 'Сладкий десерт: тёртая морковь, молоко, топлёное масло, сахар', weight: '100г', price: 220 },
-      { name: 'Гулаб Джамун / Gulab Jamun', desc: 'Сладкие шарики из сухого молока, обжаренные в масле гхи в сахарном сиропе', weight: '120г', price: 220 },
-      { name: 'Кокосовое Ладду / Coconut Ladoo', desc: 'Мягкие белые круглые шарики из кокоса', weight: '120г', price: 220 },
-      { name: 'Суджи ка Халва / Suji ka Halwa', desc: 'Индийская халва из манки', weight: '100г', price: 220 },
-      { name: 'Бесан Ладду / Besan Ladoo', desc: 'Традиционная сладость из нутовой муки', weight: '100г', price: 220 },
-      { name: 'Клубничное Ласси / Strawberry Lassi', desc: 'Клубничное пюре, кефир, сахар', weight: '280мл', price: 220 },
-      { name: 'Пенджаби Ласси / Punjabi Lassi', desc: 'Кефир, имбирь, тмин, мята, соль, чёрный перец', weight: '280мл', price: 200 },
-      { name: 'Манго Ласси / Mango Lassi', desc: 'Кефир, сахар, пюре из манго', weight: '280мл', price: 220 },
-      { name: 'Чёрный чай', desc: 'Ароматный чёрный чай', weight: '200мл', price: 60 },
-      { name: 'Зелёный чай', desc: 'Освежающий зелёный чай', weight: '200мл', price: 60 },
-      { name: 'Чай масала', desc: 'Традиционный индийский чай с пряностями', weight: '200мл', price: 150 },
-    ]
-  }
-};
-
-const YANDEX_EDA_URL = 'https://eda.yandex.ru/moscow/r/art_of_karri';
-
-const reviews = [
-  { name: 'Анна К.', text: 'Невероятно вкусно! Батер Чикен просто растворяется во рту. Атмосфера кафе переносит прямо в Индию. Обязательно вернусь!', rating: 5, date: 'Март 2024' },
-  { name: 'Михаил Р.', text: 'Лучший индийский ресторан в городе без вопросов. Масала чай — это что-то особенное, а Момо с курицей уже заказываю в третий раз.', rating: 5, date: 'Февраль 2024' },
-  { name: 'Елена В.', text: 'Пришли всей семьёй, детям понравился овощной бирьяни. Персонал очень приветливый, рассказали о каждом блюде. Приятная атмосфера!', rating: 5, date: 'Апрель 2024' },
-  { name: 'Дмитрий С.', text: 'Заказывал доставку — всё приехало горячим и вовремя. Маттон Бирьяни шикарный! Порции щедрые, цены адекватные.', rating: 5, date: 'Май 2024' },
-];
-
-const galleryImages = [
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/0f051075-175c-4cf2-8f45-a3ea7aa31816.png', label: 'Микс Веджитейблз' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/415bb6ab-44b2-41bb-87ac-cd38cf159dfa.png', label: 'Баклажан Бхарта' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/98d82402-b32b-456c-8961-5f211e3ea808.png', label: 'Микс Дал' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/a0a59239-3a9c-452b-8540-8aa9799510fc.png', label: 'Панир Пакора' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/ad1664c6-dacd-4efa-b4bc-9d00d3c8fdc7.png', label: 'Плейн Райс' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/31cb4ae0-3439-43f3-a92c-f54f0478661f.png', label: 'Вегетарианское Тхали 2' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/3f6ad396-0c6b-4501-8b4d-c12592896169.png', label: 'Вегетарианское Тхали 1' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/5be249ba-091f-4ed4-9f40-ae0aecd0ac7a.png', label: 'Не вегетарианское Тхали' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/709a0a9b-c8d2-4e94-81b5-95c7f020afb2.png', label: 'Чили Панир' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/33b5717f-669b-4250-8d03-ad5c1f419f8f.png', label: 'Овощная Пакора' },
-
-];
+import NavBar from '@/components/NavBar';
+import MenuSection from '@/components/MenuSection';
+import GallerySection from '@/components/GallerySection';
+import { YANDEX_EDA_URL, reviews, navItems } from '@/data/cafeData';
 
 export default function Index() {
-  const [activeMenu, setActiveMenu] = useState<keyof typeof menuData>('vegetarian');
-  const [isNavOpen, setIsNavOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const [galleryOpen, setGalleryOpen] = useState<number | null>(null);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
-
   const scrollTo = (id: string) => {
-    setIsNavOpen(false);
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  const navItems = [
-    { label: 'Главная', id: 'home' },
-    { label: 'О нас', id: 'about' },
-    { label: 'Меню', id: 'menu' },
-    { label: 'Доставка', id: 'delivery' },
-    { label: 'Галерея', id: 'gallery' },
-    { label: 'Отзывы', id: 'reviews' },
-    { label: 'Контакты', id: 'contacts' },
-  ];
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: 'var(--warm-white)' }}>
 
-      {/* NAV */}
-      <nav
-        className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-        style={{
-          background: scrolled ? 'rgba(44, 24, 16, 0.97)' : 'transparent',
-          backdropFilter: scrolled ? 'blur(12px)' : 'none',
-          boxShadow: scrolled ? '0 2px 20px rgba(0,0,0,0.3)' : 'none',
-        }}
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
-          <button onClick={() => scrollTo('home')} className="flex items-center gap-2">
-            <span className="text-2xl">🍛</span>
-            <div>
-              <div className="font-bold text-lg leading-tight" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--saffron)' }}>
-                Арт оф Карри
-              </div>
-              <div className="text-xs tracking-widest uppercase" style={{ color: 'rgba(245,200,66,0.6)' }}>Art of Curry</div>
-            </div>
-          </button>
-
-          {/* Desktop nav */}
-          <div className="hidden md:flex items-center gap-6">
-            {navItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="nav-link text-sm font-medium tracking-wide"
-                style={{ color: '#FEF6E8' }}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-
-          {/* Mobile toggle */}
-          <button
-            className="md:hidden p-2 rounded-lg"
-            style={{ color: 'var(--saffron)' }}
-            onClick={() => setIsNavOpen(!isNavOpen)}
-          >
-            <Icon name={isNavOpen ? 'X' : 'Menu'} size={24} />
-          </button>
-        </div>
-
-        {/* Mobile menu */}
-        {isNavOpen && (
-          <div className="md:hidden px-4 pb-4" style={{ background: 'rgba(44, 24, 16, 0.98)' }}>
-            {navItems.map(item => (
-              <button
-                key={item.id}
-                onClick={() => scrollTo(item.id)}
-                className="block w-full text-left py-3 border-b text-sm"
-                style={{ color: '#FEF6E8', borderColor: 'rgba(232,160,32,0.2)' }}
-              >
-                {item.label}
-              </button>
-            ))}
-          </div>
-        )}
-      </nav>
+      <NavBar scrollTo={scrollTo} />
 
       {/* HERO */}
       <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
@@ -245,7 +27,6 @@ export default function Index() {
         />
         <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(44,24,16,0.88) 0%, rgba(168,60,10,0.6) 60%, rgba(44,24,16,0.85) 100%)' }} />
 
-        {/* Decorative mandala */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div
             className="animate-spin-slow opacity-5 text-center"
@@ -314,105 +95,37 @@ export default function Index() {
           </div>
 
           <div className="max-w-2xl mx-auto space-y-6 text-center">
-              <h3 className="text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--dark-brown)' }}>
-                Вкус настоящей Индии<br />в каждом блюде
-              </h3>
-              <p className="text-base leading-relaxed" style={{ color: '#5a3a28' }}>
-                Кафе «Арт оф Карри» — это место, где традиционные индийские рецепты встречаются с современным уютом. Наши повара готовят каждое блюдо из свежих ингредиентов с использованием настоящих специй, привезённых прямо из Индии.
-              </p>
-              <p className="text-base leading-relaxed" style={{ color: '#5a3a28' }}>
-                Мы верим, что еда — это искусство. В каждой тарелке — история, аромат и любовь к традиционной кулинарии. Вегетарианское и невегетарианское меню удовлетворит любые предпочтения.
-              </p>
-              <div className="grid grid-cols-3 gap-4 pt-4">
-                {[
-                  { icon: '🌿', label: 'Свежие специи', sub: 'Прямо из Индии' },
-                  { icon: '👨‍🍳', label: 'Опытные повара', sub: 'Традиционные рецепты' },
-                  { icon: '🛵', label: 'Быстрая доставка', sub: 'По городу' },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className="text-center p-4 rounded-xl flex flex-col items-center justify-start"
-                    style={{ background: 'rgba(232,160,32,0.1)', border: '1px solid rgba(232,160,32,0.2)', minHeight: 100 }}
-                  >
-                    <div className="text-2xl mb-2 leading-none">{item.icon}</div>
-                    <div className="text-xs font-semibold mb-1 leading-tight" style={{ color: 'var(--dark-brown)' }}>{item.label}</div>
-                    <div className="text-xs leading-tight" style={{ color: 'var(--curry)' }}>{item.sub}</div>
-                  </div>
-                ))}
-              </div>
-          </div>
-        </div>
-      </section>
-
-      {/* MENU */}
-      <section id="menu" style={{ background: 'var(--dark-brown)', padding: '5rem 1rem' }}>
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-sm tracking-widest uppercase mb-3" style={{ color: 'var(--turmeric)' }}>Наши блюда</p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-6" style={{ fontFamily: 'Playfair Display, serif', color: '#FEF6E8' }}>
-              Меню
-            </h2>
-            <div className="ornament">
-              <span style={{ color: 'var(--turmeric)' }}>✦</span>
+            <h3 className="text-3xl font-bold" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--dark-brown)' }}>
+              Вкус настоящей Индии<br />в каждом блюде
+            </h3>
+            <p className="text-base leading-relaxed" style={{ color: '#5a3a28' }}>
+              Кафе «Арт оф Карри» — это место, где традиционные индийские рецепты встречаются с современным уютом. Наши повара готовят каждое блюдо из свежих ингредиентов с использованием настоящих специй, привезённых прямо из Индии.
+            </p>
+            <p className="text-base leading-relaxed" style={{ color: '#5a3a28' }}>
+              Мы верим, что еда — это искусство. В каждой тарелке — история, аромат и любовь к традиционной кулинарии. Вегетарианское и невегетарианское меню удовлетворит любые предпочтения.
+            </p>
+            <div className="grid grid-cols-3 gap-4 pt-4">
+              {[
+                { icon: '🌿', label: 'Свежие специи', sub: 'Прямо из Индии' },
+                { icon: '👨‍🍳', label: 'Опытные повара', sub: 'Традиционные рецепты' },
+                { icon: '🛵', label: 'Быстрая доставка', sub: 'По городу' },
+              ].map((item, i) => (
+                <div
+                  key={i}
+                  className="text-center p-4 rounded-xl flex flex-col items-center justify-start"
+                  style={{ background: 'rgba(232,160,32,0.1)', border: '1px solid rgba(232,160,32,0.2)', minHeight: 100 }}
+                >
+                  <div className="text-2xl mb-2 leading-none">{item.icon}</div>
+                  <div className="text-xs font-semibold mb-1 leading-tight" style={{ color: 'var(--dark-brown)' }}>{item.label}</div>
+                  <div className="text-xs leading-tight" style={{ color: 'var(--curry)' }}>{item.sub}</div>
+                </div>
+              ))}
             </div>
           </div>
-
-          {/* Category tabs */}
-          <div className="flex flex-wrap gap-2 justify-center mb-10">
-            {(Object.keys(menuData) as (keyof typeof menuData)[]).map(key => (
-              <button
-                key={key}
-                onClick={() => setActiveMenu(key)}
-                className="px-4 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
-                style={{
-                  background: activeMenu === key ? 'var(--curry)' : 'rgba(232,160,32,0.12)',
-                  color: activeMenu === key ? '#FEF6E8' : 'rgba(254,246,232,0.7)',
-                  border: activeMenu === key ? '2px solid var(--turmeric)' : '2px solid transparent',
-                  transform: activeMenu === key ? 'scale(1.05)' : 'scale(1)',
-                }}
-              >
-                {menuData[key].emoji} {menuData[key].label}
-              </button>
-            ))}
-          </div>
-
-          {menuData[activeMenu].note && (
-            <p className="text-center text-sm mb-6" style={{ color: 'var(--saffron)' }}>
-              ⚡ {menuData[activeMenu].note}
-            </p>
-          )}
-
-          {/* Dishes grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {menuData[activeMenu].items.map((item, i) => (
-              <div
-                key={i}
-                className="menu-card rounded-xl p-5"
-                style={{
-                  background: 'rgba(254,246,232,0.05)',
-                  border: '1px solid rgba(232,160,32,0.15)',
-                  backdropFilter: 'blur(4px)',
-                }}
-              >
-                <div className="flex justify-between items-start gap-3">
-                  <div className="flex-1">
-                    <h4 className="font-semibold text-sm leading-tight mb-2" style={{ color: 'var(--saffron)' }}>
-                      {item.name}
-                    </h4>
-                    <p className="text-xs leading-relaxed" style={{ color: 'rgba(254,246,232,0.6)' }}>
-                      {item.desc}
-                    </p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <div className="text-lg font-bold" style={{ color: '#FEF6E8' }}>{item.price} ₽</div>
-                    <div className="text-xs mt-1" style={{ color: 'rgba(232,160,32,0.7)' }}>{item.weight}</div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
       </section>
+
+      <MenuSection />
 
       {/* DELIVERY */}
       <section id="delivery" className="py-24 px-4 sm:px-6 indian-pattern">
@@ -427,12 +140,10 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Яндекс Еда CTA */}
           <div
             className="rounded-3xl p-8 sm:p-12 text-center mb-8 relative overflow-hidden"
             style={{ background: 'var(--dark-brown)', border: '2px solid rgba(232,160,32,0.25)' }}
           >
-            {/* decorative glow */}
             <div
               className="absolute inset-0 pointer-events-none"
               style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(232,160,32,0.12) 0%, transparent 70%)' }}
@@ -474,7 +185,6 @@ export default function Index() {
             </div>
           </div>
 
-          {/* Advantages */}
           <div className="grid sm:grid-cols-3 gap-4">
             {[
               { icon: '⚡', title: 'Быстро', sub: 'Среднее время доставки 45 минут' },
@@ -495,78 +205,7 @@ export default function Index() {
         </div>
       </section>
 
-      {/* GALLERY */}
-      <section id="gallery" style={{ background: 'var(--dark-brown)', padding: '5rem 1rem' }}>
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-12">
-            <p className="text-sm tracking-widest uppercase mb-3" style={{ color: 'var(--turmeric)' }}>Фотографии</p>
-            <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: '#FEF6E8' }}>
-              Галерея
-            </h2>
-            <div className="ornament">
-              <span style={{ color: 'var(--turmeric)' }}>✦</span>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {galleryImages.map((item, i) => (
-              <button
-                key={i}
-                onClick={() => setGalleryOpen(i)}
-                className="overflow-hidden rounded-xl aspect-square transition-all duration-300 hover:scale-105 relative group"
-                style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}
-              >
-                <img
-                  src={item.src}
-                  alt={item.label}
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(44,24,16,0.8) 0%, transparent 60%)' }}>
-                  <span className="text-xs font-semibold" style={{ color: 'var(--saffron)' }}>{item.label}</span>
-                </div>
-              </button>
-            ))}
-          </div>
-
-          {galleryOpen !== null && (
-            <div
-              className="fixed inset-0 z-50 flex items-center justify-center p-4"
-              style={{ background: 'rgba(0,0,0,0.92)' }}
-              onClick={() => setGalleryOpen(null)}
-            >
-              <button
-                className="absolute top-4 right-4 text-white p-2"
-                onClick={() => setGalleryOpen(null)}
-              >
-                <Icon name="X" size={28} />
-              </button>
-              <div className="flex flex-col items-center gap-3" onClick={e => e.stopPropagation()}>
-                <img
-                  src={galleryImages[galleryOpen].src}
-                  alt={galleryImages[galleryOpen].label}
-                  className="max-w-full max-h-full rounded-2xl object-contain"
-                  style={{ maxHeight: '82vh', maxWidth: '90vw' }}
-                />
-                <span className="text-sm font-semibold" style={{ color: 'var(--saffron)' }}>{galleryImages[galleryOpen].label}</span>
-              </div>
-              <button
-                className="absolute left-4 top-1/2 -translate-y-1/2 p-2"
-                style={{ color: 'var(--saffron)' }}
-                onClick={e => { e.stopPropagation(); setGalleryOpen((galleryOpen - 1 + galleryImages.length) % galleryImages.length); }}
-              >
-                <Icon name="ChevronLeft" size={36} />
-              </button>
-              <button
-                className="absolute right-4 top-1/2 -translate-y-1/2 p-2"
-                style={{ color: 'var(--saffron)' }}
-                onClick={e => { e.stopPropagation(); setGalleryOpen((galleryOpen + 1) % galleryImages.length); }}
-              >
-                <Icon name="ChevronRight" size={36} />
-              </button>
-            </div>
-          )}
-        </div>
-      </section>
+      <GallerySection />
 
       {/* REVIEWS */}
       <section id="reviews" className="py-24 px-4 sm:px-6 indian-pattern">
