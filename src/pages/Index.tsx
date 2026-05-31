@@ -639,9 +639,9 @@ export default function Index() {
                 </div>
                 <h4 className="font-semibold mb-2" style={{ color: 'var(--saffron)' }}>{item.title}</h4>
                 {item.lines.map((line, j) => (
-                  <p key={j} className="text-sm" style={{ color: j === 0 ? '#FEF6E8' : 'rgba(254,246,232,0.5)' }}>
-                    {line}
-                  </p>
+                  item.title === 'Телефон' && j === 0
+                    ? <a key={j} href="tel:+79175212617" className="text-sm block hover:opacity-75 transition-opacity" style={{ color: '#FEF6E8' }}>{line}</a>
+                    : <p key={j} className="text-sm" style={{ color: j === 0 ? '#FEF6E8' : 'rgba(254,246,232,0.5)' }}>{line}</p>
                 ))}
               </div>
             ))}
