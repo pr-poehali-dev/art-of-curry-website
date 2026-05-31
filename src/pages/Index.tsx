@@ -129,12 +129,12 @@ const reviews = [
 ];
 
 const galleryImages = [
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/e7a99adb-4f9a-47c6-9dee-d6b60529ccd5.png',
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/39faff53-e864-4a06-859d-abcea9a2744d.png',
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/0e6eddc8-20f8-42e3-a784-e8c64c7bc0cc.png',
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/d2908796-a72c-4e85-ab0b-ebe4b15def17.png',
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/7edfba06-dc12-4b0d-8b7b-b2cd7aebabd3.png',
-  'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/files/e87de4e1-5c79-4dca-86cb-78944e0f7db4.jpg',
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/0f051075-175c-4cf2-8f45-a3ea7aa31816.png', label: 'Микс Веджитейблз' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/415bb6ab-44b2-41bb-87ac-cd38cf159dfa.png', label: 'Баклажан Бхарта' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/98d82402-b32b-456c-8961-5f211e3ea808.png', label: 'Микс Дал' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/a0a59239-3a9c-452b-8540-8aa9799510fc.png', label: 'Панир Пакора' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/ad1664c6-dacd-4efa-b4bc-9d00d3c8fdc7.png', label: 'Плейн Райс' },
+  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/files/e87de4e1-5c79-4dca-86cb-78944e0f7db4.jpg', label: 'Интерьер кафе' },
 ];
 
 export default function Index() {
@@ -504,18 +504,21 @@ export default function Index() {
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-            {galleryImages.map((src, i) => (
+            {galleryImages.map((item, i) => (
               <button
                 key={i}
                 onClick={() => setGalleryOpen(i)}
-                className="overflow-hidden rounded-xl aspect-square transition-all duration-300 hover:scale-105"
+                className="overflow-hidden rounded-xl aspect-square transition-all duration-300 hover:scale-105 relative group"
                 style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.3)' }}
               >
                 <img
-                  src={src}
-                  alt={`Галерея ${i + 1}`}
+                  src={item.src}
+                  alt={item.label}
                   className="w-full h-full object-cover"
                 />
+                <div className="absolute inset-0 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: 'linear-gradient(to top, rgba(44,24,16,0.8) 0%, transparent 60%)' }}>
+                  <span className="text-xs font-semibold" style={{ color: 'var(--saffron)' }}>{item.label}</span>
+                </div>
               </button>
             ))}
           </div>
@@ -532,13 +535,15 @@ export default function Index() {
               >
                 <Icon name="X" size={28} />
               </button>
-              <img
-                src={galleryImages[galleryOpen]}
-                alt="Фото"
-                className="max-w-full max-h-full rounded-2xl object-contain"
-                style={{ maxHeight: '88vh', maxWidth: '90vw' }}
-                onClick={e => e.stopPropagation()}
-              />
+              <div className="flex flex-col items-center gap-3" onClick={e => e.stopPropagation()}>
+                <img
+                  src={galleryImages[galleryOpen].src}
+                  alt={galleryImages[galleryOpen].label}
+                  className="max-w-full max-h-full rounded-2xl object-contain"
+                  style={{ maxHeight: '82vh', maxWidth: '90vw' }}
+                />
+                <span className="text-sm font-semibold" style={{ color: 'var(--saffron)' }}>{galleryImages[galleryOpen].label}</span>
+              </div>
               <button
                 className="absolute left-4 top-1/2 -translate-y-1/2 p-2"
                 style={{ color: 'var(--saffron)' }}
