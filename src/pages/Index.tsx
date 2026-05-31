@@ -315,12 +315,12 @@ export default function Index() {
                 ].map((item, i) => (
                   <div
                     key={i}
-                    className="text-center p-4 rounded-xl"
-                    style={{ background: 'rgba(232,160,32,0.1)', border: '1px solid rgba(232,160,32,0.2)' }}
+                    className="text-center p-4 rounded-xl flex flex-col items-center justify-start"
+                    style={{ background: 'rgba(232,160,32,0.1)', border: '1px solid rgba(232,160,32,0.2)', minHeight: 100 }}
                   >
-                    <div className="text-2xl mb-2">{item.icon}</div>
-                    <div className="text-xs font-semibold mb-1" style={{ color: 'var(--dark-brown)' }}>{item.label}</div>
-                    <div className="text-xs" style={{ color: 'var(--curry)' }}>{item.sub}</div>
+                    <div className="text-2xl mb-2 leading-none">{item.icon}</div>
+                    <div className="text-xs font-semibold mb-1 leading-tight" style={{ color: 'var(--dark-brown)' }}>{item.label}</div>
+                    <div className="text-xs leading-tight" style={{ color: 'var(--curry)' }}>{item.sub}</div>
                   </div>
                 ))}
               </div>
