@@ -139,7 +139,7 @@ const galleryImages = [
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/5be249ba-091f-4ed4-9f40-ae0aecd0ac7a.png', label: 'Не вегетарианское Тхали' },
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/709a0a9b-c8d2-4e94-81b5-95c7f020afb2.png', label: 'Чили Панир' },
   { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/bucket/33b5717f-669b-4250-8d03-ad5c1f419f8f.png', label: 'Овощная Пакора' },
-  { src: 'https://cdn.poehali.dev/projects/fa777d37-a4fe-435c-b1bd-930ce0e52154/files/e87de4e1-5c79-4dca-86cb-78944e0f7db4.jpg', label: 'Интерьер кафе' },
+
 ];
 
 export default function Index() {
