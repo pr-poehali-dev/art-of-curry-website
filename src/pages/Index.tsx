@@ -53,8 +53,7 @@ export default function Index() {
             className="animate-fade-in-up delay-400 text-lg sm:text-xl mb-10 font-light leading-relaxed"
             style={{ color: 'rgba(254,246,232,0.8)' }}
           >
-            Погружение в мир ароматных специй, традиционных рецептов<br className="hidden sm:block" />
-            и тёплого гостеприимства Индии
+            Погружение в мир ароматных специй, традиционных рецептов и тёплого гостеприимства Индии
           </p>
           <div className="animate-fade-in-up delay-600 flex flex-wrap gap-4 justify-center">
             <button
