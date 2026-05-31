@@ -108,11 +108,7 @@ const menuData = {
   }
 };
 
-const deliveryZones = [
-  { zone: 'Зона 1', area: 'Центр города (до 3 км)', price: 'Бесплатно', minOrder: 'от 800 руб', time: '30-45 мин', color: '#2D6A4F' },
-  { zone: 'Зона 2', area: 'Ближайшие районы (3-7 км)', price: '150 руб', minOrder: 'от 1000 руб', time: '45-60 мин', color: '#C8691E' },
-  { zone: 'Зона 3', area: 'Отдалённые районы (7-12 км)', price: '250 руб', minOrder: 'от 1500 руб', time: '60-90 мин', color: '#A0260E' },
-];
+const YANDEX_EDA_URL = 'https://eda.yandex.ru/moscow/r/art_of_karri';
 
 const reviews = [
   { name: 'Анна К.', text: 'Невероятно вкусно! Батер Чикен просто растворяется во рту. Атмосфера кафе переносит прямо в Индию. Обязательно вернусь!', rating: 5, date: 'Март 2024' },
@@ -271,13 +267,15 @@ export default function Index() {
             >
               Смотреть меню
             </button>
-            <button
-              onClick={() => scrollTo('delivery')}
-              className="px-8 py-4 rounded-full text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:scale-105"
-              style={{ border: '2px solid var(--saffron)', color: 'var(--saffron)', background: 'transparent' }}
+            <a
+              href={YANDEX_EDA_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 rounded-full text-sm font-semibold tracking-wider uppercase transition-all duration-300 hover:scale-105 inline-block"
+              style={{ border: '2px solid var(--saffron)', color: 'var(--saffron)', background: 'transparent', textDecoration: 'none' }}
             >
               Заказать доставку
-            </button>
+            </a>
           </div>
         </div>
 
@@ -414,8 +412,8 @@ export default function Index() {
 
       {/* DELIVERY */}
       <section id="delivery" className="py-24 px-4 sm:px-6 indian-pattern">
-        <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
             <p className="text-sm tracking-widest uppercase mb-3" style={{ color: 'var(--curry)' }}>Привезём к вам</p>
             <h2 className="text-4xl sm:text-5xl font-bold mb-4" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--dark-brown)' }}>
               Доставка
@@ -423,56 +421,72 @@ export default function Index() {
             <div className="ornament">
               <span style={{ color: 'var(--turmeric)' }}>✦</span>
             </div>
-            <p className="mt-6 text-base" style={{ color: '#5a3a28' }}>
-              Доставляем горячие блюда прямо к вашей двери — свежими и ароматными
-            </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-6 mb-12">
-            {deliveryZones.map((zone, i) => (
-              <div
-                key={i}
-                className="rounded-2xl p-6 text-center transition-all duration-300 hover:scale-105"
-                style={{
-                  background: '#fff',
-                  border: `2px solid ${zone.color}`,
-                  boxShadow: `0 8px 24px ${zone.color}22`,
-                }}
-              >
-                <div className="w-12 h-12 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: zone.color }}>
-                  <Icon name="MapPin" size={22} className="text-white" />
-                </div>
-                <h4 className="font-bold text-lg mb-1" style={{ color: 'var(--dark-brown)', fontFamily: 'Playfair Display, serif' }}>
-                  {zone.zone}
-                </h4>
-                <p className="text-sm mb-4" style={{ color: '#5a3a28' }}>{zone.area}</p>
-                <div className="space-y-2">
-                  <div className="rounded-lg py-2 px-3" style={{ background: `${zone.color}15` }}>
-                    <span className="font-bold" style={{ color: zone.color }}>{zone.price}</span>
-                    <span className="text-xs block" style={{ color: '#5a3a28' }}>Стоимость доставки</span>
-                  </div>
-                  <div className="text-xs" style={{ color: '#5a3a28' }}>Мин. заказ: <strong>{zone.minOrder}</strong></div>
-                  <div className="text-xs" style={{ color: '#5a3a28' }}>⏱ {zone.time}</div>
+          {/* Яндекс Еда CTA */}
+          <div
+            className="rounded-3xl p-8 sm:p-12 text-center mb-8 relative overflow-hidden"
+            style={{ background: 'var(--dark-brown)', border: '2px solid rgba(232,160,32,0.25)' }}
+          >
+            {/* decorative glow */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(232,160,32,0.12) 0%, transparent 70%)' }}
+            />
+            <div className="relative z-10">
+              <div className="flex items-center justify-center gap-3 mb-6">
+                <div
+                  className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl"
+                  style={{ background: 'rgba(254,246,232,0.08)', border: '1px solid rgba(232,160,32,0.2)' }}
+                >
+                  🛵
                 </div>
               </div>
-            ))}
+              <h3
+                className="text-3xl sm:text-4xl font-bold mb-3"
+                style={{ fontFamily: 'Playfair Display, serif', color: '#FEF6E8' }}
+              >
+                Заказ через Яндекс Еду
+              </h3>
+              <p className="text-base mb-8 max-w-lg mx-auto" style={{ color: 'rgba(254,246,232,0.65)' }}>
+                Быстрая доставка горячих блюд прямо к вашей двери. Удобный выбор, оплата онлайн и отслеживание заказа в приложении.
+              </p>
+              <a
+                href={YANDEX_EDA_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-3 px-10 py-4 rounded-full font-bold text-base tracking-wide transition-all duration-300 hover:scale-105 hover:shadow-2xl"
+                style={{
+                  background: 'linear-gradient(135deg, #FC3F1D 0%, #FF6B35 100%)',
+                  color: '#fff',
+                  boxShadow: '0 12px 32px rgba(252,63,29,0.4)',
+                  textDecoration: 'none',
+                }}
+              >
+                <span className="text-xl">🍽</span>
+                Открыть в Яндекс Еде
+                <Icon name="ExternalLink" size={18} />
+              </a>
+            </div>
           </div>
 
-          <div className="rounded-2xl p-8" style={{ background: 'var(--dark-brown)' }}>
-            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 text-center">
-              {[
-                { icon: '🕐', title: 'Время работы', sub: 'Ежедневно 11:00–23:00' },
-                { icon: '📞', title: 'Заказ по телефону', sub: 'Или через приложение' },
-                { icon: '🌡️', title: 'Термо-упаковка', sub: 'Блюда приедут горячими' },
-                { icon: '✅', title: 'Без скрытых сборов', sub: 'Цена фиксированная' },
-              ].map((item, i) => (
-                <div key={i} className="text-center">
-                  <div className="text-3xl mb-3">{item.icon}</div>
-                  <div className="font-semibold text-sm mb-1" style={{ color: 'var(--saffron)' }}>{item.title}</div>
-                  <div className="text-xs" style={{ color: 'rgba(254,246,232,0.6)' }}>{item.sub}</div>
-                </div>
-              ))}
-            </div>
+          {/* Advantages */}
+          <div className="grid sm:grid-cols-3 gap-4">
+            {[
+              { icon: '⚡', title: 'Быстро', sub: 'Среднее время доставки 45 минут' },
+              { icon: '🌡️', title: 'Горячим', sub: 'Термо-упаковка сохраняет аромат' },
+              { icon: '📍', title: 'По городу', sub: 'Доставка по всей Москве' },
+            ].map((item, i) => (
+              <div
+                key={i}
+                className="rounded-2xl p-5 text-center"
+                style={{ background: '#fff', border: '1px solid rgba(232,160,32,0.2)', boxShadow: '0 4px 16px rgba(200,105,30,0.07)' }}
+              >
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <div className="font-bold text-sm mb-1" style={{ color: 'var(--dark-brown)' }}>{item.title}</div>
+                <div className="text-xs" style={{ color: '#5a3a28' }}>{item.sub}</div>
+              </div>
+            ))}
           </div>
         </div>
       </section>
